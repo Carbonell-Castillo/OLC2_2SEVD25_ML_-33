@@ -1,0 +1,91 @@
+<section id="ajuste" class="content-section">
+    <h2 class="text-3xl font-bold text-white mb-6"><i class="fas fa-sliders-h text-accent-cyan mr-2"></i> Ajuste de Hiperparámetros</h2>
+    
+    <div *ngIf="errorMessage" class="bg-red-900/50 text-red-300 p-4 rounded-lg mb-4 flex justify-between items-center">
+        <p><i class="fas fa-exclamation-triangle mr-2"></i> {{ errorMessage }}</p>
+        <button (click)="errorMessage = null" class="text-red-300 hover:text-white"><i class="fas fa-times"></i></button>
+    </div>
+    <div *ngIf="successMessage" class="bg-green-900/50 text-green-300 p-4 rounded-lg mb-4 flex justify-between items-center">
+        <p><i class="fas fa-check-circle mr-2"></i> {{ successMessage }}</p>
+        <button (click)="successMessage = null" class="text-green-300 hover:text-white"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2 bg-card-dark p-8 rounded-xl shadow-2xl">
+            <h3 class="text-xl font-semibold text-white mb-6 border-b border-gray-700 pb-3">Configuración de Parámetros de Regresión Logística</h3>
+            
+            <div class="space-y-8">
+                
+                <div>
+                    <label class="block text-lg font-medium text-gray-300 mb-2 flex justify-between">
+                        <span>max_iter (Máximo de Iteraciones):</span>
+                        <span id="max-iter" class="text-accent-purple font-extrabold">{{ hyperparams.max_iter }}</span>
+                    </label>
+                    <input type="range" id="max-iter-slider" min="100" max="5000" step="100" 
+                           [(ngModel)]="hyperparams.max_iter"
+                           [disabled]="isTraining"
+                           class="w-full h-2 rounded-lg appearance-none cursor-pointer range-lg bg-gray-700 accent-accent-purple">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium text-gray-300 mb-2 flex justify-between">
+                        <span>C (Inversa de la fuerza de regularización):</span>
+                        <span id="c-val" class="text-accent-purple font-extrabold">{{ hyperparams.C | number:'1.2-2' }}</span>
+                    </label>
+                    <input type="range" id="c-slider" min="0.01" max="10.0" step="0.01" 
+                           [(ngModel)]="hyperparams.C"
+                           [disabled]="isTraining"
+                           class="w-full h-2 rounded-lg appearance-none cursor-pointer range-lg bg-gray-700 accent-accent-purple">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium text-gray-300 mb-2">
+                        <span>Solver (Algoritmo de optimización):</span>
+                    </label>
+                    <select name="solver" id="solver-select"
+                            [(ngModel)]="hyperparams.solver"
+                            [disabled]="isTraining"
+                            class="w-full p-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent-purple">
+                        <option value="lbfgs">lbfgs</option>
+                        <option value="liblinear">liblinear</option>
+                        <option value="sag">sag</option>
+                        <option value="saga">saga</option>
+                        <option value="newton-cg">newton-cg</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1 flex flex-col justify-between bg-card-dark p-6 rounded-xl shadow-2xl border-l-4 border-accent-cyan">
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-white mb-4">Optimización</h3>
+                <p class="text-gray-400 text-sm">Ajusta los parámetros para mejorar la calidad y fiabilidad de las predicciones.</p>
+                <p class="text-yellow-400 text-xs mt-2" *ngIf="isTraining">Entrenamiento en curso. Espera un momento.</p>
+            </div>
+            
+            <button (click)="trainModelWithCustomParams()"
+                    [disabled]="isTraining"
+                    class="w-full py-4 rounded-xl font-bold text-lg transition duration-200 shadow-lg shadow-purple-900/50 transform"
+                    [ngClass]="{'bg-accent-purple hover:bg-purple-800 hover:scale-[1.02]': !isTraining, 'bg-gray-600 cursor-not-allowed opacity-70': isTraining}">
+                <i class="fas fa-redo-alt mr-2" *ngIf="!isTraining"></i> 
+                <i class="fas fa-spinner fa-spin mr-2" *ngIf="isTraining"></i> 
+                {{ isTraining ? 'Reentrenando...' : 'Reentrenar el Modelo' }}
+            </button>
+
+            <div class="mt-6 p-4 bg-primary-dark rounded-lg text-sm border border-gray-700">
+                <p class="font-semibold text-accent-cyan">Métricas del Último Entrenamiento:</p>
+                <div *ngIf="lastMetrics; else noMetrics">
+                    <p class="text-white">Accuracy: <span class="font-bold">{{ formatMetric(lastMetrics.accuracy) }}</span></p>
+                    <p class="text-white">Precision: <span class="font-bold">{{ formatMetric(lastMetrics.precision) }}</span></p>
+                    <p class="text-white">Recall: <span class="font-bold">{{ formatMetric(lastMetrics.recall) }}</span></p>
+                    <p class="text-white">F1-Score: <span class="font-bold text-accent-cyan">{{ formatMetric(lastMetrics.f1_score) }}</span></p>
+                    <p class="text-xs text-gray-500 mt-2">Iteraciones: {{ lastMetrics.hyperparams_used.max_iter }} | C: {{ lastMetrics.hyperparams_used.C }}</p>
+                </div>
+                <ng-template #noMetrics>
+                    <p class="text-gray-500">No hay métricas disponibles aún.</p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</section>
