@@ -46,6 +46,68 @@ backend/
 └── requirements.txt          # Dependencias Python
 ```
 
+## *Stack Tecnológico Completo*
+
+#### *Lenguaje de Programación*
+
+*Python 3.8+*
+- *Justificación:* 
+  - Lenguaje estándar en Data Science y Machine Learning
+  - Amplio ecosistema de librerías especializadas
+  - Sintaxis clara y mantenible
+  - Comunidad activa y documentación extensa
+
+
+#### *Framework Web*
+
+*Flask 3.0.0*
+- *Propósito:* Backend API REST
+- *Justificación:*
+  - Ligero y flexible (microframework)
+  - Fácil de configurar y desplegar
+  - Ideal para APIs de Machine Learning
+  - No requiere infraestructura compleja
+- *Características utilizadas:*
+  - Routing de endpoints
+  - Manejo de JSON
+  - Upload de archivos multipart/form-data
+  - Manejo de errores personalizado
+
+*Flask-CORS 4.0.0*
+- *Propósito:* Habilitar Cross-Origin Resource Sharing
+- *Justificación:*
+  - Permite que el frontend (en otro puerto/dominio) consuma la API
+  - Esencial para arquitectura frontend-backend separada
+  - Configuración simple
+
+#### *Procesamiento de Datos*
+
+*Pandas 2.1.4*
+- *Propósito:* Manipulación y análisis de datos
+- *Justificación:*
+  - Estándar de la industria para datos tabulares
+  - Optimizado para datasets medianos (1K-100K filas)
+  - Funciones integradas para limpieza de datos
+- *Funciones clave utilizadas:*
+  - read_csv(): Carga de archivos CSV
+  - fillna(): Imputación de valores nulos
+  - drop_duplicates(): Eliminación de duplicados
+  - to_numeric(): Conversión de tipos
+  - describe(): Estadísticas descriptivas
+
+*NumPy 1.26.2*
+- *Propósito:* Operaciones numéricas y arrays
+- *Justificación:*
+  - Base de Pandas y scikit-learn
+  - Operaciones vectorizadas eficientes
+  - Funciones matemáticas optimizadas
+- *Funciones clave utilizadas:*
+  - clip(): Ajuste de valores a rangos
+  - median(): Cálculo de medianas
+  - Arrays numéricos para el modelo
+
+---
+
 ### **Frontend (Angular)**
 
 El frontend fue desarrollado usando **Angular** y se divide en las siguientes secciones, permitiendo al usuario interactuar con las funcionalidades del backend:
@@ -180,6 +242,24 @@ Los hiperparámetros por defecto se ajustaron para optimizar la convergencia y p
 | **`random_state`** | `42` | Se utiliza para **fijar la semilla aleatoria**. Esto es crucial para la **reproducibilidad**; garantiza que la división de datos y el proceso de entrenamiento produzcan exactamente los mismos resultados en ejecuciones posteriores. |
 
 -----
+[11:48 p.m., 15/12/2025] Fabiola Fiusac:  Naturaleza del Problema*
+- *Clasificación binaria:* El problema requiere predecir una de dos clases (riesgo/no riesgo)
+- *Variables numéricas continuas:* Las 9 features son valores numéricos que mantienen relaciones lineales con la variable objetivo
+- *Interpretabilidad requerida:* En un contexto educativo, es crucial poder explicar POR QUÉ un estudiante está en riesgo
+##  Variables del Modelo
+[11:49 p.m., 15/12/2025] Fabiola Fiusac: ### *Selección del Modelo*
+
+*Algoritmo elegido:* Regresión Logística (Logistic Regression)
+
+### *Justificación de la Selección*
+
+*¿Por qué Logistic Regression y no otros modelos?*
+
+Se evaluaron diferentes algoritmos de clasificación y se seleccionó Logistic Regression por las siguientes razones:
+#### *1. Naturaleza del Problema*
+- *Clasificación binaria:* El problema requiere predecir una de dos clases (riesgo/no riesgo)
+- *Variables numéricas continuas:* Las 9 features son valores numéricos que mantienen relaciones lineales con la variable objetivo
+- *Interpretabilidad requerida:* En un contexto educativo, es crucial poder explicar POR QUÉ un estudiante está en riesgo
 
 ## Variables del Modelo
 
@@ -318,7 +398,7 @@ En el contexto educativo, los valores extremos **SON VÁLIDOS Y NECESARIOS**:
   - precision_score: Precisión (falsos positivos)
   - recall_score: Exhaustividad (falsos negativos)
   - f1_score: Balance Precision-Recall
-  
+
 ### **Configuración del Modelo**
 
 **Algoritmo:** Regresión Logística (Logistic Regression)
